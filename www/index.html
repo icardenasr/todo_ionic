@@ -7,10 +7,12 @@
     <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
     <title>TodoApp Improved App</title>
     <!-- CSS -->
-    <link href="lib/ionic/css/ionic.css" rel="stylesheet">
+    <link href="http://code.ionicframework.com/1.0.0-rc.5/css/ionic.css" rel="stylesheet">
+    <!-- <link href="lib/ionic/css/ionic.css" rel="stylesheet"> -->
     <link href="css/style.css" rel="stylesheet">
     <!-- Javascript -->
-    <script src="lib/ionic/js/ionic.bundle.js"></script>
+    <script src="http://code.ionicframework.com/1.0.0-rc.5/js/ionic.bundle.js"></script>
+    <!-- <script src="lib/ionic/js/ionic.bundle.js"></script> -->
     <script src="cordova.js"></script>
     <script src="js/app.js"></script>
   </head>
@@ -39,7 +41,7 @@
         </ion-header-bar>
         <ion-content scroll="false">
           <ion-list show-delete="showDeleteTasks" show-reorder="true">
-            <ion-item ng-repeat="task in activeProject.tasks">
+            <ion-item class="item-remove-animate" ng-repeat="task in activeProject.tasks" item="task">
               {{task.title}}
               <ion-delete-button class="ion-minus-circled" ng-click="deleteTask($index)">
               </ion-delete-button>
@@ -62,7 +64,7 @@
         <ion-content scroll="false">
           <!-- <ion-list show-delete="showDeleteProjects" show-reorder="true"> -->
           <ion-list show-delete="showDeleteProjects">
-            <ion-item ng-repeat="project in projects" ng-click="selectProject(project, $index)" ng-class="{active: activeProject == project}">
+            <ion-item class="item-remove-animate" ng-repeat="project in projects" ng-click="selectProject(project, $index)" ng-class="{active: activeProject == project}">
               {{project.title}}
               <ion-delete-button class="ion-minus-circled" ng-click="deleteProject($index)">
               </ion-delete-button>

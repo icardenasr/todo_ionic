@@ -48,8 +48,11 @@ app.factory("Projects", function() {
 });
 
 // Controlador para la pagina principal
-app.controller('ContentController', ['$scope', '$ionicSideMenuDelegate', '$ionicModal', 'Projects', '$timeout',
-  function($scope, $ionicSideMenuDelegate, $ionicModal, Projects, $timeout) {
+app.controller('ContentController', ['$scope', '$ionicSideMenuDelegate', '$ionicModal', '$ionicPopup', 'Projects', '$timeout',
+  function($scope, $ionicSideMenuDelegate, $ionicModal, $ionicPopup, Projects, $timeout) {
+
+    // Variable utilizada para la creacion de un nuevo proyecto
+    $scope.aNewProject = { title: "" };
 
     // Variable que controla el borrado de las tareas y proyectos
     $scope.showDeleteTasks = false;
@@ -107,10 +110,30 @@ app.controller('ContentController', ['$scope', '$ionicSideMenuDelegate', '$ionic
     // Funcion que permite crear un nuevo proyecto mediante un aviso
     $scope.newProject = function() {
       // Solicitamos el nombre del nuevo proyecto
-      var projectTitle = prompt('Project name');
-      if(projectTitle) {
-        createProject(projectTitle);
-      }
+      var myPopup = $ionicPopup.show({
+        template: '<input type="text" ng-model="aNewProject.title">',
+        title: 'Your first project name:',
+        scope: $scope,
+        buttons: [
+          { text: 'Cancel' },
+          {
+            text: '<b>Save</b>',
+            type: 'button-positive',
+            onTap: function(e) {
+              if ($scope.aNewProject.title) {
+                // Se ha introducido un nombre de proyecto
+                createProject($scope.aNewProject.title);
+                // Reseteamos el valor introducido
+                $scope.aNewProject = { title: "" };
+              } else {
+                // No se ha introducido nombre de proyecto - Volvemos a pedir
+                $scope.aNewProject = { title: "" };
+                $scope.forceOneProject();
+              }
+            }
+          }
+        ]
+      });
     };
 
     // Funcion que crea y guarda un nuevo proyecto dado su titulo
@@ -177,9 +200,15 @@ app.controller('ContentController', ['$scope', '$ionicSideMenuDelegate', '$ionic
 
     // Funcion que permite cambiar el orden de una tarea
     $scope.reorderTask = function(task, fromIndex, toIndex) {
+      console.log("reorderTask llamado");
+      console.log("Task: " + task);
+      console.log("fromIndex: " + fromIndex + " - toIndex: " + toIndex);
       $scope.activeProject.tasks.splice(fromIndex, 1);
+      console.log("reorderTask 1");
       $scope.activeProject.tasks.splice(toIndex, 0, task);
+      console.log("reorderTask 2");
       Projects.save($scope.projects);
+      console.log("reorderTask 3");
     }
 
     // Comprobacion inicial de si existe algun proyecto, y si no, se pide crear
@@ -191,13 +220,29 @@ app.controller('ContentController', ['$scope', '$ionicSideMenuDelegate', '$ionic
 
     // Funcion que fuerza la creacion de un primer proyecto si no hay ninguno
     $scope.forceOneProject = function() {
-      while(true) {
-        var projectTitle = prompt('Your first project title:');
-        if(projectTitle) {
-          createProject(projectTitle);
-          break;
-        }
-      }
+      var myPopup = $ionicPopup.show({
+        template: '<input type="text" ng-model="aNewProject.title">',
+        title: 'Your first project name:',
+        scope: $scope,
+        buttons: [
+          {
+            text: '<b>Save</b>',
+            type: 'button-positive',
+            onTap: function(e) {
+              if ($scope.aNewProject.title) {
+                // Se ha introducido un nombre de proyecto
+                createProject($scope.aNewProject.title);
+                // Reseteamos el valor introducido
+                $scope.aNewProject = { title: "" };
+              } else {
+                // No se ha introducido nombre de proyecto - Volvemos a pedir
+                $scope.aNewProject = { title: "" };
+                $scope.forceOneProject();
+              }
+            }
+          }
+        ]
+      });
     }
 
   }]);

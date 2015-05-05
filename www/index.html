@@ -34,6 +34,9 @@
             <button class="button button-icon" ng-click="toggleDeleteTasks()">
               <i class="icon ion-trash-a"></i>
             </button>
+            <button class="button button-icon" ng-click="toggleReorderTasks()">
+              <i class="icon ion-shuffle"></i>
+            </button>
             <button class="button button-icon" ng-click="newTask()">
               <i class="icon ion-compose"></i>
             </button>
@@ -57,8 +60,9 @@
         <ion-header-bar align-title="left" class="bar-calm">
           <h1 class="title" style="padding-left: 6px;">Projects</h1>
           <div class="buttons">
-            <button class="button button-icon ion-plus" ng-click="newProject()"></button>
             <button class="button button-icon ion-trash-a" ng-click="toggleDeleteProjects()"></button>
+            <button class="button button-icon ion-shuffle" ng-click="toggleReorderProjects()"></button>
+            <button class="button button-icon ion-plus" ng-click="newProject()"></button>
           </div>
         </ion-header-bar>
         <ion-content>

@@ -171,9 +171,19 @@ app.controller('ContentController', ['$scope', '$ionicSideMenuDelegate', '$ionic
       $scope.showDeleteTasks = !$scope.showDeleteTasks;
     }
 
+    // Funcion que muestra u oculta el reordenado de las tareas
+    $scope.toggleReorderTasks = function() {
+      $scope.showReorderTasks = !$scope.showReorderTasks;
+    }
+
     // Funcion que muestra u oculta el borrado de los proyectos
     $scope.toggleDeleteProjects = function() {
       $scope.showDeleteProjects = !$scope.showDeleteProjects;
+    }
+
+    // Funcion que muestra u oculta el reordenado de los proyectos
+    $scope.toggleReorderProjects = function() {
+      $scope.showReorderProjects = !$scope.showReorderProjects;
     }
 
     // Funcion que permite el borrado de una tarea

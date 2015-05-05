@@ -39,9 +39,9 @@
             </button>
           </div>
         </ion-header-bar>
-        <ion-content scroll="false">
-          <ion-list show-delete="showDeleteTasks" show-reorder="true">
-            <ion-item class="item-remove-animate" ng-repeat="task in activeProject.tasks" item="task">
+        <ion-content>
+          <ion-list show-delete="showDeleteTasks" show-reorder="showReorderTasks">
+            <ion-item class="item-remove-animate" ng-repeat="task in activeProject.tasks" item="task" ng-click="selectTask(task, $index)">
               {{task.title}}
               <ion-delete-button class="ion-minus-circled" ng-click="deleteTask($index)">
               </ion-delete-button>
@@ -61,10 +61,9 @@
             <button class="button button-icon ion-trash-a" ng-click="toggleDeleteProjects()"></button>
           </div>
         </ion-header-bar>
-        <ion-content scroll="false">
-          <!-- <ion-list show-delete="showDeleteProjects" show-reorder="true"> -->
-          <ion-list show-delete="showDeleteProjects">
-            <ion-item class="item-remove-animate" ng-repeat="project in projects" ng-click="selectProject(project, $index)" ng-class="{active: activeProject == project}">
+        <ion-content>
+          <ion-list show-delete="showDeleteProjects" show-reorder="showReorderProjects">
+            <ion-item class="item-remove-animate" ng-repeat="project in projects" item="project" ng-click="selectProject(project, $index)" ng-class="{active: activeProject == project}">
               {{project.title}}
               <ion-delete-button class="ion-minus-circled" ng-click="deleteProject($index)">
               </ion-delete-button>

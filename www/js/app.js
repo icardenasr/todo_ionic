@@ -58,6 +58,10 @@ app.controller('ContentController', ['$scope', '$ionicSideMenuDelegate', '$ionic
     $scope.showDeleteTasks = false;
     $scope.showDeleteProjects = false;
 
+    // Variables que controlan la ordenacion de las tareas y proyectos
+    $scope.showReorderTasks = false;
+    $scope.showReorderProjects = false;
+
     // Inicializamos los proyectos
     $scope.projects = Projects.all();
 
@@ -71,6 +75,11 @@ app.controller('ContentController', ['$scope', '$ionicSideMenuDelegate', '$ionic
       scope: $scope,
       animation: 'slide-in-up'
     });
+
+    // Funcion que permite seleccionar una tarea
+    $scope.selectTask = function(task, index) {
+      console.log("Select task: " + index);
+    }
 
     // Funcion que permite mostrar la ventana modal para crear nueva tarea
     $scope.newTask = function() {
@@ -200,15 +209,16 @@ app.controller('ContentController', ['$scope', '$ionicSideMenuDelegate', '$ionic
 
     // Funcion que permite cambiar el orden de una tarea
     $scope.reorderTask = function(task, fromIndex, toIndex) {
-      console.log("reorderTask llamado");
-      console.log("Task: " + task);
-      console.log("fromIndex: " + fromIndex + " - toIndex: " + toIndex);
       $scope.activeProject.tasks.splice(fromIndex, 1);
-      console.log("reorderTask 1");
       $scope.activeProject.tasks.splice(toIndex, 0, task);
-      console.log("reorderTask 2");
       Projects.save($scope.projects);
-      console.log("reorderTask 3");
+    }
+
+    // Funcion que permite cambiar el orden de los proyectos
+    $scope.reorderProject = function(project, fromIndex, toIndex) {
+      $scope.projects.splice(fromIndex, 1);
+      $scope.projects.splice(toIndex, 0, project);
+      Projects.save($scope.projects);
     }
 
     // Comprobacion inicial de si existe algun proyecto, y si no, se pide crear

@@ -15,6 +15,7 @@ Esta aplicación es una variación del tutorial de Ionic, con más funcionalidad
 
 ### Comandos para instalacion de requisitos ###
 * bower install ngCordova
+* cordova plugin add http://github.com/VitaliiBlagodir/cordova-plugin-datepicker
 
 
 ### Compilación de la aplicación: ###

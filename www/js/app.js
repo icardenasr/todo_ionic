@@ -49,8 +49,10 @@ app.factory("Projects", function() {
 });
 
 // Controlador para la pagina principal
-app.controller('ContentController', ['$scope', '$ionicSideMenuDelegate', '$ionicModal', '$ionicPopup', 'Projects', '$timeout',
-  function($scope, $ionicSideMenuDelegate, $ionicModal, $ionicPopup, Projects, $timeout) {
+// REQUISITO: cordova plugin add http://github.com/VitaliiBlagodir/cordova-plugin-datepicker
+app.controller('ContentController', ['$scope', '$ionicSideMenuDelegate', '$ionicModal', '$ionicPopup',
+  'Projects', '$timeout', '$cordovaDatePicker',
+  function($scope, $ionicSideMenuDelegate, $ionicModal, $ionicPopup, Projects, $timeout, $cordovaDatePicker) {
 
     // Variable utilizada para la creacion de un nuevo proyecto
     $scope.aNewProject = { title: "" };
@@ -62,6 +64,11 @@ app.controller('ContentController', ['$scope', '$ionicSideMenuDelegate', '$ionic
     // Variables que controlan la ordenacion de las tareas y proyectos
     $scope.showReorderTasks = false;
     $scope.showReorderProjects = false;
+
+    // Variable que controlan la seleccion de fechas limite para nuevas tareas
+    $scope.deadlineSelected = false;
+    $scope.newDeadline = new Date();
+    $scope.newDeadlineString = '';
 
     // Inicializamos los proyectos
     $scope.projects = Projects.all();
@@ -90,6 +97,46 @@ app.controller('ContentController', ['$scope', '$ionicSideMenuDelegate', '$ionic
     // Funcion que permite cerrar la ventana modal para crear nueva tarea
     $scope.closeNewTask = function() {
       $scope.taskModal.hide();
+      // Reseteamos las variables encargadas de la fecha limite
+      $scope.newDeadline = new Date();
+      $scope.newDeadlineString = '';
+      $scope.deadlineSelected = false;
+    };
+
+    // Funcion que muestra el picker para la fecha de una tarea
+    $scope.selectDeadline = function() {
+      // Opciones para el selector de fechas para las tareas
+      minDate = ionic.Platform.isIOS() ? new Date() : (new Date()).valueOf();
+      var datePickerOptions = {
+        date: new Date(),
+        mode: 'date', // or 'time'
+        minDate: minDate,
+        allowOldDates: false,
+        allowFutureDates: true,
+        doneButtonLabel: 'Done',
+        doneButtonColor: '#377ef5',
+        cancelButtonLabel: 'Cancel',
+        cancelButtonColor: '#ef4639'
+      };
+      // Mostramos el selector de fechas
+      $cordovaDatePicker.show(datePickerOptions)
+        .then(function(date){
+          $scope.newDeadline = date;
+          $scope.deadlineSelected = true;
+          // Pasamos la fecha al formato cadena
+          var dlYear = $scope.newDeadline.getFullYear();
+          var dlMonth = $scope.newDeadline.getMonth() + 1;
+          var dlDate = $scope.newDeadline.getDate();
+          var dlMonthString = '' + dlMonth;
+          if (dlMonth < 10) {
+            dlMonthString = '0' + dlMonth;
+          }
+          var dlDateString = '' + dlDate;
+          if (dlDate < 10) {
+            dlDateString = '0' + dlDate;
+          }
+          $scope.newDeadlineString = dlYear + '-' + dlMonthString + '-' + dlDateString;
+        });
     };
 
     // Funcion que permite crear una nueva tarea desde la ventana modal
@@ -100,16 +147,29 @@ app.controller('ContentController', ['$scope', '$ionicSideMenuDelegate', '$ionic
       }
       // Deshabilitamos el estado de borrar tareas
       $scope.showDeleteTasks = false;
-      // Introducimos la nueva tarea al final de las tareas del proyecto
-      $scope.activeProject.tasks.push({
-        title: task.title
-      });
+      // Comprobamos si se ha elegido una fecha limite
+      if ($scope.deadlineSelected) {
+        // Hay fecha limite - Introducimos la nueva tarea al final del proyecto
+        $scope.activeProject.tasks.push({
+          title: task.title,
+          deadline: $scope.newDeadlineString
+        });
+      } else {
+        // No hay fecha limite - Introducimos la nueva tarea al final del proyecto
+        $scope.activeProject.tasks.push({
+          title: task.title
+        });
+      }
       // Ocultamos la ventana modal
       $scope.taskModal.hide();
       // Guardamos todos los proyectos (ineficiente!)
       Projects.save($scope.projects);
       // Reseteamos al titulo de la tarea para que salga vacio para la proxima
       task.title = "";
+      // Reseteamos las variables encargadas de la fecha limite
+      $scope.newDeadline = new Date();
+      $scope.newDeadlineString = '';
+      $scope.deadlineSelected = false;
     };
 
     // Funcion que muestra el menu de la izquierda

@@ -90,11 +90,18 @@
               <label class="item item-input">
                 <input type="text" placeholder="What do you need to do?" ng-model="task.title"></input>
               </label>
+              <label class="item item-input" ng-show="deadlineSelected">
+                <span class="input-label">Deadline:</span>
+                <p>{{ newDeadlineString }}</p>
+              </label>
             </div>
             <div class="padding">
               <button type="submit" class="button button-block button-positive">Create Task</button>
             </div>
           </form>
+          <div class="padding">
+            <button class="button button-outline button-calm" style="width: 100%;" ng-click="selectDeadline()">Select deadline</button>
+          </div>
         </ion-content>
       </div>
     </script>

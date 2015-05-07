@@ -5,13 +5,17 @@ Esta aplicación es una variación del tutorial de Ionic, con más funcionalidad
 
 ### Requisitos: ###
 * Ionic Framework: http://ionicframework.com/
-* ngCordova: http://ngcordova.com/
+* Angular DatePicket: https://github.com/alongubkin/angular-datepicker
 
 ### Comandos para creación de la aplicación: ###
 * ionic start Consigna blank
 * cd Consigna
 * ionic platform add ios
 * ionic platform add android
+
+### Comandos para instalacion de requisitos ###
+* bower install ngCordova
+
 
 ### Compilación de la aplicación: ###
 * ionic build ios

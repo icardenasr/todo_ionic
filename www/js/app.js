@@ -1,6 +1,7 @@
 // Ionic Todo Improved App
 
-var app = angular.module('starter', ['ionic']);
+// REQUISITO: bower install ngCordova
+var app = angular.module('starter', ['ionic', 'ngCordova']);
 
 app.run(function($ionicPlatform) {
   $ionicPlatform.ready(function() {

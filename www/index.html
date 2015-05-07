@@ -43,8 +43,13 @@
         </ion-header-bar>
         <ion-content>
           <ion-list show-delete="showDeleteTasks" show-reorder="showReorderTasks">
-            <ion-item class="item-remove-animate" ng-repeat="task in activeProject.tasks" item="task" ng-click="selectTask(task, $index)">
-              {{task.title}}
+            <ion-item class="item-remove-animate" style="padding-bottom: 0px;" ng-repeat="task in activeProject.tasks" item="task" ng-click="selectTask(task, $index)">
+              <div style="width: 100%; padding-bottom: 0px;">
+                {{splitText(task.title, 40)}}
+              </div>
+              <div style="width: 100%; padding-top: 0px; padding-bottom: 0px; padding-right: 0px; font-size: 80%; color: #ef4639;" ng-show="task.deadline">
+                <span class="icon ion-ios-alarm" style="padding-right: 5px;"></span>{{task.deadline}}
+              </div>
               <ion-delete-button class="ion-minus-circled" ng-click="deleteTask($index)">
               </ion-delete-button>
               <ion-reorder-button class="ion-navicon" on-reorder="reorderTask(task, $fromIndex, $toIndex)">

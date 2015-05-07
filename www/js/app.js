@@ -84,10 +84,18 @@ app.controller('ContentController', ['$scope', '$ionicSideMenuDelegate', '$ionic
       animation: 'slide-in-up'
     });
 
+    // Funcion que recorta un texto al numero de caracteres dado
+    $scope.splitText = function(myText, myNum) {
+      if (myText.length > myNum) {
+        myText = myText.substring(0, myNum-3) + "...";
+      }
+      return myText;
+    };
+
     // Funcion que permite seleccionar una tarea
     $scope.selectTask = function(task, index) {
       console.log("Select task: " + index);
-    }
+    };
 
     // Funcion que permite mostrar la ventana modal para crear nueva tarea
     $scope.newTask = function() {
